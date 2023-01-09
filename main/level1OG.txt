@@ -1,0 +1,94 @@
+Tile Ground  0 0
+Tile Ground  1 0
+Tile Ground  2 0
+Tile Ground  3 0
+Tile Ground  4 0
+Tile Ground  5 0
+Tile Ground  6 0
+Tile Ground  7 0
+Tile Ground  8 0
+Tile Ground  9 0
+Tile Ground  10 0
+Tile Ground  11 0
+Tile Ground  12 0
+Tile Ground  13 0
+Tile Ground  14 0
+Tile Ground  15 0
+Tile Ground  16 0
+Tile Ground  17 0
+Tile Ground  18 0
+Tile Ground  19 0
+Tile Ground  20 0
+Tile Ground  21 0
+Tile Ground  22 0
+Tile Ground  23 0
+Tile Ground  24 0
+Tile Ground  28 0
+Tile Ground  29 0
+Tile Ground  0  1
+Tile Ground  1  1
+Tile Ground  2  1
+Tile Ground  3  1
+Tile Ground  4  1
+Tile Ground  5  1
+Tile Ground  6  1
+Tile Ground  7  1
+Tile Ground  8  1
+Tile Ground  9  1
+Tile Ground  10 1
+Tile Ground  11 1
+Tile Ground  12 1
+Tile Ground  13 1
+Tile Ground  14 1
+Tile Ground  15 1
+Tile Ground  16 1
+Tile Ground  17 1
+Tile Ground  18 1
+Tile Ground  19 1
+Tile Ground  20 1
+Tile Ground  21 1
+Tile Ground  22 1
+Tile Ground  23 1
+Tile Ground  24 1
+Tile Ground  28 1
+Tile Ground  29 1
+
+Tile Brick     6  4
+Tile Question  7  4
+Tile Brick     8  4
+Tile Question  9  4
+Tile Brick     10 4
+Tile Question  11 4
+Tile Brick     12 4
+Tile Question  8  7
+Tile Brick     9  7
+Tile Question  10 7 
+Tile Question  9  10
+
+Tile Brick     28 5
+Tile Brick     29 5
+Tile Brick     28 6
+Tile Brick     29 6
+Tile Brick     28 8
+Tile Brick     29 8
+Tile Question  28 9
+Tile Question  29 9
+
+Tile Tube2     16 2
+Tile Tube      16 3
+
+Tile Tube2     23 2
+Tile Tube      23 3
+
+Tile Tube2     28 2
+Tile Tube      28 3
+
+Dec  Mountain  0  2
+Dec  Bush      5  2
+Dec  Cloud     3  7
+Dec  Cloud2    14 8
+Dec  Bush2     19 2
+
+Dec  Explosion 1 8
+
+Player 0 3 48 48 5 -20 10 0.75 Buster 

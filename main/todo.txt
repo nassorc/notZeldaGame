@@ -1,0 +1,5 @@
+Todo list
+1. Game engine
+2. scenes
+3. actions
+4. switching scenes
