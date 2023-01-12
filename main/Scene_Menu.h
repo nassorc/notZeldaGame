@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "Scene_Play.h"
+#include "Scene_Editor.h"
 #include <map>
 #include <memory>
 #include <deque>
@@ -15,8 +16,8 @@ protected:
 	std::vector<std::string>   m_levelPaths;
 	sf::Text                   m_menuText;
 	size_t                     m_selectedMenuIndex = 0;
-	std::array<std::string, 3> m_menuStrings{"level1", "level2", "level3"};
-	std::array<std::string, 3> m_menuLevelPaths{ "level1.txt", "testLevel.txt", "level3.txt" };
+	std::array<std::string, 3> m_menuStrings{"Start", "Editor", "Quit"};
+	std::array<std::string, 3> m_menuLevelPaths{ "level1.txt", "level1.txt"};
 
 
 	std::vector<sf::Text>    m_fontEntities;
@@ -29,24 +30,39 @@ protected:
 		if (!font.loadFromFile("./assets/fonts//bit.ttf")) {
 			std::cout << "Could not load font" << std::endl;
 		}
+		float posX{18.f}, posY{24.f}, bottomPadding{0};
 
+		// loo[ through each string and create menu text
+		for (int i{ 0 }; i < m_menuStrings.size(); ++i) {
+			sf::Text text;
+			text.setFont(font);
+			text.setString(m_menuStrings[i]);
+			text.setCharacterSize(18);
+			//text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));
+			text.setPosition(sf::Vector2f(posX, posY + bottomPadding));
+			m_fontEntities.push_back(text);
+
+			bottomPadding += 65.f;
+		}
 
 		// possible better soluction @1:07:02
-		sf::Text text;
+	/*	sf::Text text;
 		text.setFont(font);
 		text.setString(m_menuStrings[0]);
-		text.setCharacterSize(28);
-		text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));
-		text.setPosition(sf::Vector2f(m_game->window().getSize().x / 2, 200.f));
-		m_fontEntities.push_back(text);
+		text.setCharacterSize(18);
+		text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));*/
 
-		text.setPosition(sf::Vector2f(m_game->window().getSize().x / 2, 200.f+65));
-		text.setString(m_menuStrings[1]);
-		m_fontEntities.push_back(text);
+		
 
-		text.setPosition(sf::Vector2f(m_game->window().getSize().x / 2, 200.f + 130));
-		text.setString(m_menuStrings[2]);
-		m_fontEntities.push_back(text);
+		
+
+		//text.setPosition(sf::Vector2f(m_game->window().getSize().x / 2, 200.f+65));
+		//text.setString(m_menuStrings[1]);
+		//m_fontEntities.push_back(text);
+
+		//text.setPosition(sf::Vector2f(m_game->window().getSize().x / 2, 200.f + 130));
+		//text.setString(m_menuStrings[2]);
+		//m_fontEntities.push_back(text);
 
 
 
@@ -82,7 +98,12 @@ protected:
 				else m_selectedMenuIndex = 0;
 			}
 			else if (action.name() == "Enter") {
-				m_game->changeScene("PLAY", std::make_shared<Scene_Play>(m_game, m_menuLevelPaths[m_selectedMenuIndex]));
+				if (m_menuStrings[m_selectedMenuIndex] == "Start") {
+					m_game->changeScene("PLAY", std::make_shared<Scene_Play>(m_game, m_menuLevelPaths[m_selectedMenuIndex]));
+				}
+				else if (m_menuStrings[m_selectedMenuIndex] == "Editor") {
+					m_game->changeScene("PLAY", std::make_shared<Scene_Editor>(m_game, m_menuLevelPaths[m_selectedMenuIndex]));
+				}
 			}
 		}
 	}

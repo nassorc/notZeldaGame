@@ -26,7 +26,39 @@ Texture   TexMR       assets/images/world/lakeMR.png
 Texture   TexB        assets/images/world/lakeB.png
 Texture   TexBLE      assets/images/world/lakeBLE.png
 Texture   TexBRE      assets/images/world/lakeBRE.png
+Texture   TexTrunkBLE      assets/images/world/trunkBLE.png
+Texture   TexTrunkBRE      assets/images/world/trunkBRE.png
+Texture   TexTrunkTLE      assets/images/world/trunkTLE.png
+Texture   TexTrunkTRE      assets/images/world/trunkTRE.png
+Texture   TexTrunkT      assets/images/world/trunkT.png
+Texture   TexDoor      assets/images/world/door.png
+Texture   TexBridge      assets/images/world/bridge.png
+Texture   TexTile      assets/images/world/tile.png
+Texture   TexTreeBLE      assets/images/world/treeBLE.png
+Texture   TexTreeB      assets/images/world/treeB.png
+Texture   TexTreeBRE      assets/images/world/treeBRE.png
+Texture   TexTreeTLE      assets/images/world/treeTLE.png
+Texture   TexTreeTRE      assets/images/world/treeTRE.png
+Texture   TexTreeT      assets/images/world/treeT.png
+Texture   TexGuard      assets/images/character/guard.png
+Texture   TexStair      assets/images/world/stair.png
 
+Animation Stari       TexStair       1   0
+Animation TrunkBLE    TexTrunkBLE    1   0
+Animation TrunkBRE    TexTrunkBRE    1   0
+Animation TrunkTLE    TexTrunkTLE    1   0
+Animation TrunkTRE    TexTrunkTRE    1   0
+Animation TrunkT    TexTrunkT    1   0
+Animation Door        TexDoor     1   0
+Animation Bridge       TexBridge     1   0
+Animation Tile       TexTile     1   0
+Animation TreeBLE       TexTreeBLE     1   0
+Animation TreeB       TexTreeB     1   0
+Animation TreeBRE       TexTree     1   0
+Animation TreeTLE       TexTreeTLE     1   0
+Animation TreeTRE       TexTreeTRE     1   0
+Animation TreeT       TexTreeT     1   0
+Animation Guard       TexGuard     1   0
 Animation LakeULE     TexULE       1   0
 Animation LakeURE     TexURE       1   0
 Animation LakeUT      TexUT        1   0

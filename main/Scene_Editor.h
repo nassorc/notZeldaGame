@@ -25,7 +25,7 @@
 // mouse cursor scales from player position.
 // possible reason: view centered on player
 
-class Scene_Play : public Scene {
+class Scene_Editor : public Scene {
 	struct PlayerConfig {
 		float X, Y, CX, CY, SPEED, MAXSPEED, JUMP, GRAVITY;
 		std::string WEAPON;
@@ -34,13 +34,13 @@ protected:
 	std::string              m_levelPath;
 	std::shared_ptr<Entity>  m_player;
 	PlayerConfig             m_playerConfig;
-	bool                     m_drawTextures   = true;
-	bool                     m_drawCollision  = false;
-	bool                     m_drawGrid       = false;
-	bool                     m_ghostPlayer    = false;
-	bool                     m_editorMode     = false;
-	bool                     m_captureLevel   = false;
-	bool                     m_drag           = false;
+	bool                     m_drawTextures = true;
+	bool                     m_drawCollision = false;
+	bool                     m_drawGrid = false;
+	bool                     m_ghostPlayer = false;
+	bool                     m_editorMode = false;
+	bool                     m_captureLevel = false;
+	bool                     m_drag = false;
 	Physics                  m_physics;
 
 	sf::Vector2f             m_mPos;
@@ -51,6 +51,7 @@ protected:
 
 
 	void init(const std::string& levelPath) {
+		std::cout << "EDITOR STATE\n===========\n\n";
 		// register action
 		registerAction(sf::Keyboard::P, "PAUSE");
 		registerAction(sf::Keyboard::Escape, "QUIT");
@@ -136,10 +137,10 @@ protected:
 				// create entity
 				auto tile = m_entityManager.addEntity("Tile");
 				auto& ani = tile->addComponent<CAnimation>(m_game->getAssets().getAnimation(aniName, true));
-				
+
 				// compute world coordinates
 				sf::Vector2f pos(gridToMidPixel(room.x, room.y, x, y, tile));
-				
+
 				tile->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
 				tile->addComponent<CBoundingBox>(sf::Vector2f(ani.animation.getSize().x, ani.animation.getSize().y));
 				tile->addComponent<CDraggable>();
@@ -170,7 +171,7 @@ protected:
 		// add tile cursor entity
 		auto cursor = m_entityManager.addEntity("Cursor");
 		cursor->addComponent<CRectangle>(sf::Vector2f(64.f, 64.f), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0), 2.f);
-		cursor->addComponent<CTransform>(sf::Vector2f(100, 100), sf::Vector2f(0,0), 0);
+		cursor->addComponent<CTransform>(sf::Vector2f(100, 100), sf::Vector2f(0, 0), 0);
 
 		spawnPlayer();
 	}
@@ -190,14 +191,7 @@ protected:
 
 			sf::Vector2f pos(sf::Vector2f(47.f * col, 47.f * row));
 			tile->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
-			tile->addComponent<CBoundingBox>(sf::Vector2f(ani.animation.getSize().x, ani.animation.getSize().y));
 			tile->addComponent<CDraggable>();
-
-			/*auto animation = item.second.getSprite();
-			animation.setPosition(sf::Vector2f(47.f * col, 47.f * row));
-
-			animation.scale(sf::Vector2f(0.25f, 0.3f));*/
-			//m_game->window().draw(animation);
 
 			++col;
 			++c;
@@ -265,7 +259,7 @@ protected:
 			else if (action.name() == "LEFT_CLICK") {
 				sf::Vector2f worldPos = windowToWorld(action.pos());
 				// scale down coords to start at 0
-				
+
 				worldPos.x = ((int)worldPos.x / 64);
 				worldPos.y = ((int)worldPos.y / 64);
 				//std::cout << "Mouse Clicked " << worldPos.x << " " << worldPos.y << std::endl;
@@ -281,7 +275,7 @@ protected:
 			}
 			else if (action.name() == "MOUSE_MOVE") {
 				// lock cursor into a grid cell
-				
+
 				//std::cout << "Mouse Move: " << action.pos().x << " " << action.pos().y << "\n";
 
 				sf::Vector2f wp = windowToWorld(action.pos());
@@ -291,7 +285,7 @@ protected:
 				// WHEN R(0,0) we need (32, 32)
 
 				// create a cell like coordinate system
-				m_mPos.x = (wp.x < 0) ? ((int)wp.x / 64) * 64 -64 : ((int)wp.x / 64) * 64;
+				m_mPos.x = (wp.x < 0) ? ((int)wp.x / 64) * 64 - 64 : ((int)wp.x / 64) * 64;
 				m_mPos.y = (wp.y < 0) ? ((int)wp.y / 64) * 64 - 64 : ((int)wp.y / 64) * 64;
 
 				std::cout << "COORD: " << m_mPos.x << " " << m_mPos.y << std::endl;
@@ -346,7 +340,7 @@ protected:
 			}
 		}*/
 	}
-	
+
 	void sCollision() {
 		// Hint @ 1:32:00
 		// REMEMBER: SFML's (0,0) position if on the top left corner
@@ -394,14 +388,14 @@ protected:
 						// add coin
 						auto coin = m_entityManager.addEntity("Tile");
 						auto& ani = coin->addComponent<CAnimation>(m_game->getAssets().getAnimation("Coin", true));
-						sf::Vector2f pos(0,0);
+						sf::Vector2f pos(0, 0);
 						pos.x = e->getComponent<CTransform>().pos.x;
 						pos.y = e->getComponent<CTransform>().pos.y - 64;
 						coin->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
 
 						// replace question block animation with question2
 						e->addComponent<CAnimation>(m_game->getAssets().getAnimation("Question2", true));
-				
+
 					}
 				}
 				else if (prevOverlap.y > 0 && e->getComponent<CTransform>().pos.x > transform.pos.x) {
@@ -427,7 +421,7 @@ protected:
 			for (auto& e : m_entityManager.getEntities("Tile")) {
 				if (e->getComponent<CAnimation>().animation.getName() == "Brick") {
 
-					sf::Vector2f overlap = m_physics.GetOverlap(b,e);
+					sf::Vector2f overlap = m_physics.GetOverlap(b, e);
 					if (overlap.x > 0 && overlap.y > 0) {
 						sf::Vector2f pos = e->getComponent<CTransform>().pos;
 						b->setNotActive();
@@ -490,16 +484,16 @@ protected:
 		// render implementation @ 1:32:00
 		// may contain implementation of boudning box
 
+
+
 		sf::View view(sf::FloatRect(0.f, 0.f, m_game->window().getSize().x, m_game->window().getSize().y));
 
 		m_entityManager.update();
 		m_game->window().clear(sf::Color(111, 113, 232));
 
-		 //camera
+		//camera
 		float cx{ m_player->getComponent<CTransform>().pos.x - (m_game->window().getSize().x / 2) };
 		float cy{ m_player->getComponent<CTransform>().pos.y - (m_game->window().getSize().y / 2) };
-
-	
 
 		// testing room view mouse cursor
 		view.setCenter(sf::Vector2f((float)m_game->window().getSize().x / 2, (float)m_game->window().getSize().y / 2));
@@ -515,7 +509,7 @@ protected:
 
 				//transform.pos += transform.velocity;
 				e->getComponent<CAnimation>().animation.getSprite().setPosition(transform.pos.x, transform.pos.y);
-				
+
 				if (m_drawTextures) {
 					m_game->window().draw(e->getComponent<CAnimation>().animation.getSprite());
 				}
@@ -532,7 +526,10 @@ protected:
 		}
 		if (m_drawCollision) {
 			for (auto& e : m_entityManager.getEntities()) {
+				if (e->tag() == "Asset") continue;
+
 				if (e->hasComponent<CBoundingBox>()) {
+					std::cout << e->getComponent<CAnimation>().animation.getName() << "\n";
 					auto& box = e->getComponent<CBoundingBox>();
 					auto& transform = e->getComponent<CTransform>();
 					sf::RectangleShape rect;
@@ -547,16 +544,18 @@ protected:
 			}
 		}
 
-		//// draw cursor
-		//m_cursor.setOutlineThickness(2);
-		//m_cursor.setOutlineColor(sf::Color(0, 0, 0));
-		//m_cursor.setFillColor(sf::Color(0, 0, 0, 0));
-		//m_cursor.setSize(sf::Vector2f(64, 64));
-		//m_cursor.setOrigin(32, 32);
-		//
-		//std::cout << m_mPos.x << " " << m_mPos.x << "\n";
-		//m_cursor.setPosition(m_mPos.x + 32, m_mPos.y + 32);
-		//m_game->window().draw(m_cursor);
+		// draw room lines	
+		sf::RectangleShape line(sf::Vector2f(5, m_game->window().getSize().y));
+		line.setFillColor(sf::Color(0, 0, 0));
+		line.setPosition(sf::Vector2f(0, 0));
+		m_game->window().draw(line);
+
+
+		line.setSize(sf::Vector2f(m_game->window().getSize().x, 5));
+		line.setPosition(sf::Vector2f(0, 0));
+
+		m_game->window().draw(line);
+
 
 		if (m_editorMode) {
 			gInventory();
@@ -596,11 +595,11 @@ protected:
 					e->getComponent<CTransform>().pos.x = m_mPos.x + e->getComponent<CAnimation>().animation.getSize().x / dx;
 					e->getComponent<CTransform>().pos.y = m_mPos.y - e->getComponent<CAnimation>().animation.getSize().y / dy;
 				}*/
-	
+
 				auto& transform = e->getComponent<CTransform>();
 				sf::Vector2f animSize = e->getComponent<CAnimation>().animation.getSize();
 				/*transform.pos.x = m_mPos.x + (animSize.x / 2) - 32;
-				transform.pos.y = m_mPos.y - (animSize.y / 2) + 32; 	*/			
+				transform.pos.y = m_mPos.y - (animSize.y / 2) + 32; 	*/
 				transform.pos.x = m_mPos.x + 32;
 				transform.pos.y = m_mPos.y + 32;
 			}
@@ -615,6 +614,9 @@ protected:
 		if (!file) {
 			std::cout << "Failed to open file" << std::endl;
 		}
+
+		float px, py, pcx, pcy, psx, psy, psm, pg;
+		std::string weapon, ptype;
 
 		for (auto e : m_entityManager.getEntities()) {
 			if (e->tag() == "Asset") continue;
@@ -632,7 +634,7 @@ protected:
 			x = ((int)x + 20) % 20;
 			// get room coord
 			rx = (e->getComponent<CTransform>().pos.x - 32 - (64 * x)) / m_game->window().getSize().x;
-			
+
 			y = (e->getComponent<CTransform>().pos.y - (e->getComponent<CAnimation>().animation.getSize().y / 2)) / 64;
 			y = ((int)y + 12) % 12;
 
@@ -640,48 +642,37 @@ protected:
 
 
 			ry = (e->getComponent<CTransform>().pos.y - 32 - (64 * y)) / m_game->window().getSize().y;
-			if (type == "Player") {
-				float cx, cy, sx, sy, sm, g;
-				std::string weapon;
-				x = m_playerConfig.X;
-				y = m_playerConfig.Y;
-				cx = e->getComponent<CBoundingBox>().size.x;
-				cy = e->getComponent<CBoundingBox>().size.y;
-				sx = m_playerConfig.SPEED;
-				sy = m_playerConfig.JUMP;
-				sm = m_playerConfig.MAXSPEED;
-				g = e->getComponent<CGravity>().gravity;
-				weapon = m_playerConfig.WEAPON;
 
-				file << type << " " << x << " " << y + 1 << " " << cx << " " << cy << " " << sx << " " << sy << " " << sm << " " << g << " " << weapon << " \n";
+			if (type == "Player") {
+				ptype = type;
+				px = m_playerConfig.X;
+				py = m_playerConfig.Y;
+				pcx = e->getComponent<CBoundingBox>().size.x;
+				pcy = e->getComponent<CBoundingBox>().size.y;
+				psx = m_playerConfig.SPEED;
+				psy = m_playerConfig.JUMP;
+				psm = m_playerConfig.MAXSPEED;
+				pg = e->getComponent<CGravity>().gravity;
+				weapon = m_playerConfig.WEAPON;
 				continue;
 
 			}
 			std::cout << type << " " << animName << " " << rx << " " << ry << " " << x << " " << y << std::endl;
 			file << type << " " << animName << " " << rx << " " << ry << " " << x << " " << y << "\n";
-		
+
 		}
+		// write player to file last
+		file << ptype << " " << px << " " << py + 1 << " " << pcx << " " << pcy << " " << psx << " " << psy << " " << psm << " " << pg << " " << weapon << " \n";
+
+
 		m_captureLevel = false;
 		file.close();
 
-	
+
 		//gridX = gridX * 64 + (animation.animation.getSize().x / 2);
 		//                                     
 		//gridY = m_game->window().getSize().y - (gridY * 64) - (animation.animation.getSize().y / 2);
 		// window.y + halfsize 
-	}
-
-	void saveLevel(std::string type, std::string name, float x, float y) {
-		std::ofstream file("testLevel.txt", std::ios::out);
-
-		if (!file) {
-			std::cout << "Failed to open file" << std::endl;
-		}
-
-		file << type << " " << name << " " << x << " " << y << "\n";
-
-		file.close();
-		return;
 	}
 
 	void gInventory() {
@@ -689,7 +680,7 @@ protected:
 		sf::View originalView = m_game->window().getView();
 
 		sf::View view;
-		view.reset(sf::FloatRect(0,0,200, 800));
+		view.reset(sf::FloatRect(0, 0, 200, 800));
 		view.setViewport(sf::FloatRect(0.75f, 0, 0.2f, 0.8f));
 
 		m_game->window().setView(view);
@@ -711,10 +702,10 @@ protected:
 
 		m_game->window().draw(text);
 
-		
+
 
 		//// call grid to mid function. Need animation component
-		
+
 		for (auto& e : m_entityManager.getEntities("Asset")) {
 			if (e->hasComponent<CAnimation>()) {
 				auto& transform = e->getComponent<CTransform>();
@@ -722,7 +713,7 @@ protected:
 				//transform.pos += transform.velocity;
 				e->getComponent<CAnimation>().animation.getSprite().setPosition(transform.pos.x, transform.pos.y);
 				if (m_drawTextures) {
-					e->getComponent<CAnimation>().animation.getSprite().setScale(sf::Vector2f(0.6,0.6));
+					e->getComponent<CAnimation>().animation.getSprite().setScale(sf::Vector2f(0.6, 0.6));
 					if (e->getComponent<CAnimation>().animation.getSize().x > 64) {
 						e->getComponent<CAnimation>().animation.getSprite().setScale(sf::Vector2f(0.1, 0.1));
 
@@ -736,7 +727,7 @@ protected:
 		// check if mouse is between view
 		// viewport x and size
 		/*if (sf::Mouse::getPosition(m_game->window()).x > m_game->window().getSize().x * 0.75 && sf::Mouse::getPosition(m_game->window()).x < m_game->window().getSize().x * (0.75 + 0.2)) {*/
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			for (auto& e : m_entityManager.getEntities("Asset")) {
 				sf::Vector2f mPos = m_game->window().mapPixelToCoords(sf::Mouse::getPosition(m_game->window()));
 				//std::cout << "Entity.x: " << e->getComponent<CTransform>().pos.x << " " << m.x << std::endl;
@@ -744,7 +735,7 @@ protected:
 					&& mPos.x < e->getComponent<CTransform>().pos.x + e->getComponent<CAnimation>().animation.getSize().x - 32
 					&& mPos.y > e->getComponent<CTransform>().pos.y - 32
 					&& mPos.y < e->getComponent<CTransform>().pos.y + e->getComponent<CAnimation>().animation.getSize().y - 32
-				) {
+					) {
 					m_tileToDraw = e->getComponent<CAnimation>().animation.getName();
 					std::cout << "draw " << m_tileToDraw << "\n";
 				}
@@ -755,40 +746,35 @@ protected:
 		m_game->window().setView(originalView);
 	}
 
-	//// create entity
-	//auto tile = m_entityManager.addEntity("Tile");
-	//auto& ani = tile->addComponent<CAnimation>(m_game->getAssets().getAnimation(aniName, true));
-
-	//// compute world coordinates
-	//sf::Vector2f pos(gridToMidPixel(room.x, room.y, x, y, tile));
-
-	//tile->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
-	//tile->addComponent<CBoundingBox>(sf::Vector2f(ani.animation.getSize().x, ani.animation.getSize().y));
-	//tile->addComponent<CDraggable>();
-
 	void sDrawTile() {
 		if (m_tileToDraw == "") return;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
-			// set tile details
-			auto tile = m_entityManager.addEntity("Tile");
-			auto& animation = tile->addComponent<CAnimation>(m_game->getAssets().getAnimation(m_tileToDraw, true));
-
+		
 			// set position to mouse pointer
 			sf::Vector2f pos(m_mPos);              // m_mPos uses a cell system
 			// adjust position
 			pos.x += 32;
 			pos.y += 32;
-
+			for (auto& e : m_entityManager.getEntities()) {
+				if (e->tag() == "Cursor") continue;
+				if (e->tag() == "Asset") continue;
+				//std::cout << pos.x << " " << pos.y << " " << e->getComponent<CTransform>().pos.x << " " << e->getComponent<CTransform>().pos.y << std::endl;
+				if (pos == e->getComponent<CTransform>().pos) {
+					return;
+				}
+			}
+			// set tile details
+			auto tile = m_entityManager.addEntity("Tile");
+			auto& animation = tile->addComponent<CAnimation>(m_game->getAssets().getAnimation(m_tileToDraw, true));
 			tile->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
 
 			tile->addComponent<CDraggable>();
-
 
 		}
 	}
 
 public:
-	Scene_Play(GameEngine* gameEngine, const std::string& levelPath)
+	Scene_Editor(GameEngine* gameEngine, const std::string& levelPath)
 		: Scene(gameEngine)
 		, m_levelPath(levelPath)
 	{

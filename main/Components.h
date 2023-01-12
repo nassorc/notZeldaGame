@@ -97,7 +97,7 @@ public:
 	CBoundingBox(const sf::Vector2f& s)
 		: size(s), halfSize(s.x/2,s.y/2) 
 	{
-		has = true;
+
 	}
 
 };
