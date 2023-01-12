@@ -54,5 +54,68 @@ public:
 
 		return sf::Vector2f(ox, oy);
 	}
+
+	// physics
+	struct Intersect {
+		bool result;
+		sf::Vector2f pos;
+	};
+
+	Intersect LineIntersect(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d) {
+		// get difference 
+		sf::Vector2f r = (b - a);
+		sf::Vector2f s = (d - c);
+
+		// calculate cross product 
+		float rxs = r.x * s.y - r.y * s.x;
+
+		sf::Vector2f cma = c - a;
+
+		// scalar value multiplied to line segment
+		float t = (cma.x * s.y - cma.y * s.x) / rxs;
+		float u = (cma.x * r.y - cma.y * r.x) / rxs;
+
+		// if 0<=t<=1, then instersection between line segments
+		if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+			return { true, sf::Vector2f(a.x + t * r.x, a.y + t * r.y) };
+		}
+
+		return { false, sf::Vector2f(0,0) };
+	}
+
+	// test whether line segment AB intersects with any lines of the bounding box of Entity e
+	bool EntityIntersect(const sf::Vector2f& a, const sf::Vector2f& b, std::shared_ptr<Entity> e) {
+
+		sf::Vector2f e1, e2, e3, e4;
+
+		sf::Vector2f pos = e->getComponent<CTransform>().pos;
+		sf::Vector2f hs = sf::Vector2f(e->getComponent<CAnimation>().animation.getSize().x/2, e->getComponent<CAnimation>().animation.getSize().y / 2);
+
+
+		e1 = sf::Vector2f(pos.x - hs.x, pos.y - hs.y);
+		e2 = sf::Vector2f(pos.x + hs.x, pos.y - hs.y);
+		e3 = sf::Vector2f(pos.x - hs.x, pos.y + hs.y);
+		e4 = sf::Vector2f(pos.x + hs.x, pos.y + hs.y);
+
+
+		Intersect i1, i2, i3, i4;
+
+		i1 = LineIntersect(a, b, e1, e2);
+
+		i2 = LineIntersect(a, b, e2, e3);
+		i3 = LineIntersect(a, b, e3, e4);
+		i4 = LineIntersect(a, b, e4, e1);
+
+		std::cout << i1.pos.x << " " << i1.pos.y << std::endl;
+		std::cout << i2.pos.x << " " << i2.pos.y << std::endl;
+
+		std::cout << i3.pos.x << " " << i3.pos.y << std::endl;
+
+		std::cout << i4.pos.x << " " << i4.pos.y << std::endl;
+
+
+
+		return i1.result || i2.result || i3.result || i4.result;
+	}
 };
 
