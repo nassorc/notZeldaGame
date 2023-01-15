@@ -4,6 +4,10 @@
 #include "GameEngine.h"
 #include "EntityManager.h"
 #include "Physics.h"
+
+#include "imgui.h"
+#include "imgui/imgui-SFML.h"
+
 #include <fstream>
 #include <cstdlib>
 #include <cmath>
@@ -165,6 +169,20 @@ protected:
 				m_playerConfig.X = x;         m_playerConfig.Y = y;        m_playerConfig.CX = cx;
 				m_playerConfig.CY = cy;       m_playerConfig.SPEED = sx;   m_playerConfig.JUMP = sy;
 				m_playerConfig.MAXSPEED = sm; m_playerConfig.GRAVITY = gy; m_playerConfig.WEAPON = b;
+			}
+			else if (type == "NPC") {
+				sf::Vector2f room;
+				std::string behavior;
+				float health, damage, speed;
+				bool bMovement, bVision;
+				fin >> aniName >> room.x >> room.y >> x >> y >> bMovement >> bVision >> health >> damage >> behavior >> speed;
+				auto npc = m_entityManager.addEntity("NPC");
+				auto& animation = npc->addComponent<CAnimation>(m_game->getAssets().getAnimation(aniName, true));
+
+				sf::Vector2f pos(gridToMidPixel(room.x, room.y, x, y, npc));
+				npc->addComponent<CTransform>(pos, sf::Vector2f(0.f, 0.f), 0);
+				npc->addComponent<CBoundingBox>(sf::Vector2f(animation.animation.getSize().x, animation.animation.getSize().y));
+				npc->addComponent<CDraggable>();
 			}
 		}
 
@@ -643,6 +661,12 @@ protected:
 
 			ry = (e->getComponent<CTransform>().pos.y - 32 - (64 * y)) / m_game->window().getSize().y;
 
+			int bMovement{0}, bVision{0};
+
+			if (animName == "Bush") {
+				bMovement = bVision = 1;
+			}
+
 			if (type == "Player") {
 				ptype = type;
 				px = m_playerConfig.X;
@@ -658,7 +682,7 @@ protected:
 
 			}
 			std::cout << type << " " << animName << " " << rx << " " << ry << " " << x << " " << y << std::endl;
-			file << type << " " << animName << " " << rx << " " << ry << " " << x << " " << y << "\n";
+			file << type << " " << animName << " " << rx << " " << ry << " " << x << " " << y << " " << bMovement << " " << bVision << "\n";
 
 		}
 		// write player to file last
@@ -691,14 +715,20 @@ protected:
 		sf::Font font;
 		sf::Text text;
 
+		m_game->window().draw(background);
+
 		font.loadFromFile("./jb.ttf");
 		text.setFont(font);
-		text.setFillColor(sf::Color(0, 0, 0));
-		text.setCharacterSize(18);
-		text.setString("BRICK");
-		text.setPosition(sf::Vector2f(40.f, 60.f));
+		text.setFillColor(sf::Color(0, 0, 0, 255));
+		text.setCharacterSize(12);
+		text.setString("Blocks Vision");
+		text.setPosition(sf::Vector2f(10, 640.f));
 
-		m_game->window().draw(background);
+		m_game->window().draw(text);
+
+
+		text.setString("Blocks Movement");
+		text.setPosition(sf::Vector2f(10, 658.f));
 
 		m_game->window().draw(text);
 
@@ -742,6 +772,9 @@ protected:
 
 			}
 		}
+
+		// tile settings gui
+		
 
 		m_game->window().setView(originalView);
 	}

@@ -2,21 +2,10 @@ Texture   TexStand    assets/images/character/stand64.png
 Texture   TexRun      assets/images/character/run64.png
 Texture   TexAir      assets/images/character/air64.png
 Texture   TexExplode  assets/images/misc/explosion.png
-Texture   TexCoin     assets/images/misc/coinspin.png
 Texture   TexGround   assets/images/world/ground.png
 Texture   TexBlock    assets/images/world/block.png
 Texture   TexBrick    assets/images/world/brick.png
-Texture   TexTube     assets/images/world/tube.png
-Texture   TexTube2    assets/images/world/tube2.png
-Texture   TexQuestion assets/images/world/question.png
-Texture   TexQuestion2 assets/images/world/question2.png
 Texture   TexBush     assets/images/world/bush.png
-Texture   TexBush2    assets/images/world/bush2.png
-Texture   TexMountain assets/images/world/mountain.png
-Texture   TexCloud    assets/images/world/cloud.png
-Texture   TexCloud2   assets/images/world/cloud2.png
-Texture   TexCastle   assets/images/world/castle.png
-Texture   TexBullet   assets/images/misc/bullet.png
 Texture   TexULE      assets/images/world/lakeULE.png
 Texture   TexURE      assets/images/world/lakeURE.png
 Texture   TexUT       assets/images/world/lakeUT.png
@@ -72,18 +61,7 @@ Animation Stand       TexStand     1   0
 Animation Run         TexRun       4   10
 Animation Air         TexAir       1   0
 Animation Explosion   TexExplode   14  5
-Animation Coin        TexCoin      5   15
 Animation Ground      TexGround    1   0
-Animation Question    TexQuestion  3   20
-Animation Question2   TexQuestion2 1   0
 Animation Brick       TexBrick     1   0
-Animation Tube        TexTube      1   0
-Animation Tube2       TexTube2     1   0
 Animation Bush        TexBush      1   0
-Animation Bush2       TexBush2     1   0
-Animation Mountain    TexMountain  1   0
-Animation Cloud       TexCloud     1   0
-Animation Cloud2      TexCloud2    1   0
-Animation Castle      TexCastle    1   0
-Animation Bullet      TexBullet    1   0
 Font      Tech        assets/fonts/bit.ttf

@@ -20,6 +20,7 @@ int main()
 {
     GameEngine game("../assets.txt");
     game.run();
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
