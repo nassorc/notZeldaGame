@@ -1,6 +1,5 @@
 Tile Bush 0 0 0 0 0 0
-Tile Bush 0 0 10 5 0 0
-Tile TreeB -1 0 19 0 0 0 
+Tile Bush 0 -1 1 11 0 0
+Tile TreeB -1 0 19 0 0 0
 NPC Stand 0 -1 0 11 0 0 3 1 Follow 5
-Player 3 -3 48 48 5 -20 10 0 Buster
-Cursor 1
+Player 3 -3 48 48 5 -20 10 0 Buster 

@@ -577,6 +577,7 @@ protected:
 			// skip entities that are not part of the map design
 			if (e->tag() == "Asset") continue;
 			if (e->tag() == "Cursor") continue;
+			if (e->tag() == "Player") continue;
 
 			std::string type, animName;
 			float x, y, rx, ry;
